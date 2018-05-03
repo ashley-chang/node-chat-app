@@ -7,18 +7,6 @@
     <p>Welcome to the Chat App!</p>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io(); //loaded in library so this method is available -- initiate request from client to server
-      // open up web socket and keep connection open
-      // store socket in variable to listen to data from server and send to server
-      socket.on('connect', () => {
-        console.log('Connected to server'); //client prints this
-      });
-
-      socket.on('disconnect', () => {
-        console.log('Disconnected from server');
-      });
-
-    </script>
+    <script src="/js/index.js"></script>
   </body>
 </html>
