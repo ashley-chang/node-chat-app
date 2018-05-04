@@ -20,9 +20,10 @@ io.on('connection', (socket) => { //special event
 
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => { //first arg is data emitted, second is acknowledgment
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback('This is from the server -- passed into callback and end up in client side callback');
   });
 
     //broadcasting
