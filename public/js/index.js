@@ -3,6 +3,26 @@
 var socket = io(); //loaded in library so this method is available -- initiate request from client to server
 // open up web socket and keep connection open
 // store socket in variable to listen to data from server and send to server
+
+function scrollToBottom () { //called every time new message added to chat area
+  // selectors
+  var messages = $('#messageHistory');
+  var newMessage = messages.children('li:last-child');
+
+  //heights
+  var clientHeight = messages.prop('clientHeight');
+  var scrollTop = messages.prop('scrollTop');
+  var scrollHeight = messages.prop('scrollHeight');
+  var newMessageHeight = newMessage.innerHeight(); //takes padding into account
+  var lastMessageHeight = newMessage.prev().innerHeight();
+
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messages.scrollTop(scrollHeight); //set scrollTop value
+  }
+}
+
+
 socket.on('connect', function(){
   console.log('Connected to server'); //client prints this
 });
@@ -17,6 +37,7 @@ socket.on('newMessage', function(message) {
   });
 
   $('#messageHistory').append(html);
+  scrollToBottom();
 
   // var li = $("<li></li>");
   // li.text(`${message.from} ${formattedTime}: ${message.text}`);
@@ -35,12 +56,6 @@ socket.on('disconnect', function(){
 //   console.log('Received acknowledgement', data);
 // });
 
-//first arg as name of custom event
-//data from newEmail comes as first arg to callback
-// socket.on('newEmail', function(email){
-//   console.log('New email', email);
-// });
-
 socket.on('newLocationMessage', function (message) {
   var template = $('#location-message-template').html();
   var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -50,7 +65,8 @@ socket.on('newLocationMessage', function (message) {
     createdAt: formattedTime
   });
 
-  $('#message-history').append(html);
+  $('#messageHistory').append(html);
+  scrollToBottom();
 });
 
 $('#message-form').on('submit', function(e){

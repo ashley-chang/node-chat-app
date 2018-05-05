@@ -30,13 +30,6 @@ io.on('connection', (socket) => { //special event
     io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
   });
 
-    //broadcasting
-    // socket.broadcast.emit('newMessage', {
-    //   from: message.from,
-    //   text: message.text,
-    //   createdAt: new Date().getTime()
-    // });
-
   socket.on('disconnect', () => {
     console.log('User disconnected from server');
   });
