@@ -25,6 +25,26 @@ function scrollToBottom () { //called every time new message added to chat area
 
 socket.on('connect', function(){
   console.log('Connected to server'); //client prints this
+  var params = jQuery.deparam(window.location.search);
+
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('Join successful');
+    }
+  });
+});
+
+socket.on('updateUserList', function(users) {
+  console.log(users);
+  var ol = $('<ol></ol>');
+  users.forEach(function(user) {
+    ol.append($('<li></li>').text(user));
+  });
+
+  $('#users').html(ol);
 });
 
 socket.on('newMessage', function(message) {
